@@ -1,7 +1,7 @@
 # 👨‍💻 Telsio Isidoro | Full-Stack Developer
 
 <p align="center">
-  <img src="logo/logo svg.svg.png" alt="T.I Logo" width="200">
+  <img src="logo/logo svg.svg" alt="T.I Logo" width="200">
 </p>
 
 ## 📌 About Me
