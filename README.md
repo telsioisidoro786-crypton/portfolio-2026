@@ -1,8 +1,6 @@
 # 👨‍💻 Telsio Isidoro | Full-Stack Developer
 
-<p align="center">
-  <img src="logo/logo(1).svg" alt="T.I Logo" width="200">
-</p>
+
 
 ## 📌 About Me
 I am an **IT Professional and Full-Stack Developer** based in Luanda, currently transitioning to **Coimbra, Portugal**. With a strong foundation in both legacy and modern web technologies, I specialize in bridging the gap between robust backend architectures and minimalist, high-performance frontend experiences.
