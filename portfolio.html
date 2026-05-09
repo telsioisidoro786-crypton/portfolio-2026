@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telsio Isidoro — Dev Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0A0A0A;
+    --coal: #1A1A1A;
+    --dark: #2C2C2C;
+    --mid: #5C5C5C;
+    --muted: #8C8C8C;
+    --border: #D4D4D0;
+    --light: #EBEBЕ7;
+    --bg: #F6F5F1;
+    --white: #FFFFFF;
+    --accent: #1A1A1A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--black);
+    font-weight: 300;
+    line-height: 1.7;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--black);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    opacity: 0.4;
+  }
+  body:hover .cursor, body:hover .cursor-ring { opacity: 1; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 28px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    mix-blend-mode: multiply;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mid); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 60px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: 0; top: 0;
+    width: 50%; height: 100%;
+    background: var(--white);
+    z-index: 0;
+  }
+  .hero-left { position: relative; z-index: 1; padding-right: 80px; }
+  .hero-right { position: relative; z-index: 1; padding-left: 80px; }
+
+  .hero-label {
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-label::before {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--muted);
+  }
+
+  h1.hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300; line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  h1.hero-name em {
+    font-style: italic; font-weight: 300;
+    color: var(--mid);
+  }
+
+  .hero-title {
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin: 24px 0 32px;
+  }
+
+  .hero-desc {
+    font-size: 16px; font-weight: 300;
+    color: var(--dark); max-width: 380px;
+    line-height: 1.75;
+  }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 48px;
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--black); text-decoration: none;
+    border-bottom: 1px solid var(--black);
+    padding-bottom: 4px;
+    transition: gap 0.3s;
+  }
+  .hero-cta:hover { gap: 20px; }
+
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 0;
+  }
+  .stat-item {
+    background: var(--white);
+    padding: 36px 32px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; font-weight: 300;
+    line-height: 1; color: var(--black);
+  }
+  .stat-label {
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-top: 8px;
+  }
+
+  /* Section base */
+  section { padding: 120px 60px; }
+  .section-header {
+    display: flex; align-items: baseline;
+    gap: 24px; margin-bottom: 80px;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+  }
+  h2.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300; line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  /* Projects */
+  .projects { background: var(--white); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--white);
+    padding: 52px 48px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .project-card::after {
+    content: '↗';
+    position: absolute; top: 40px; right: 48px;
+    font-size: 20px; color: var(--border);
+    transition: color 0.3s, transform 0.3s;
+  }
+  .project-card:hover { background: var(--bg); }
+  .project-card:hover::after { color: var(--black); transform: translate(4px, -4px); }
+
+  .project-tag {
+    font-size: 10px; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 32px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .project-tag::before {
+    content: '';
+    display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--black);
+  }
+
+  h3.project-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 300;
+    line-height: 1.15; margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .project-desc {
+    font-size: 14px; font-weight: 300;
+    color: var(--mid); line-height: 1.7;
+    max-width: 340px; margin-bottom: 36px;
+  }
+
+  .project-stack {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .stack-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.05em;
+    color: var(--mid);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    background: transparent;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .project-card:hover .stack-badge {
+    border-color: var(--dark); color: var(--dark);
+  }
+
+  /* Skills */
+  .skills-section { background: var(--bg); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 0;
+  }
+  .skill-group {
+    background: var(--bg);
+    padding: 40px 36px;
+  }
+  .skill-group-title {
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 20px;
+  }
+  .skill-list { display: flex; flex-direction: column; gap: 10px; }
+  .skill-item {
+    font-size: 15px; font-weight: 300; color: var(--dark);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .skill-item::before {
+    content: ''; flex-shrink: 0;
+    width: 16px; height: 1px; background: var(--border);
+  }
+
+  /* Contact */
+  .contact-section {
+    background: var(--coal);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: center;
+    padding: 0;
+  }
+  .contact-left {
+    padding: 120px 60px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .contact-right { padding: 120px 60px; }
+
+  .contact-label {
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .contact-label::before {
+    content: ''; width: 40px; height: 1px; background: rgba(255,255,255,0.2);
+  }
+
+  h2.contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 300; line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  h2.contact-title em { font-style: italic; color: rgba(255,255,255,0.5); }
+
+  .contact-links { display: flex; flex-direction: column; gap: 24px; }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
+    text-decoration: none;
+    color: var(--white);
+    transition: opacity 0.2s;
+  }
+  .contact-link:hover { opacity: 0.6; }
+  .contact-link-label {
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+  }
+  .contact-link-value { font-size: 15px; font-weight: 300; }
+  .contact-link-arrow { font-size: 18px; opacity: 0.3; }
+
+  /* Footer */
+  footer {
+    background: var(--coal);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 32px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px; font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  /* Contact Form */
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); font-weight: 400;
+  }
+  .form-input, .form-textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    border-radius: 0;
+    width: 100%;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.2); }
+  .form-input:focus, .form-textarea:focus {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.08);
+  }
+  .form-textarea { resize: vertical; min-height: 110px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .btn-submit {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--white); color: var(--coal);
+    border: none; padding: 16px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: none; transition: opacity 0.2s, transform 0.2s;
+    width: 100%;
+  }
+  .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-arrow { font-size: 16px; transition: transform 0.3s; }
+  .btn-submit:hover .btn-arrow { transform: translateX(4px) translateY(-4px); }
+
+  .form-feedback {
+    font-size: 13px; padding: 12px 16px;
+    border-left: 2px solid;
+    display: none;
+  }
+  .form-feedback.success {
+    border-color: #4CAF50; color: #81C784;
+    background: rgba(76,175,80,0.08); display: block;
+  }
+  .form-feedback.error {
+    border-color: #EF5350; color: #EF9A9A;
+    background: rgba(239,83,80,0.08); display: block;
+  }
+
+  /* WhatsApp floating button */
+  .wa-btn {
+    position: fixed; bottom: 32px; right: 32px; z-index: 500;
+    width: 56px; height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .wa-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+  }
+  .wa-btn svg { width: 28px; height: 28px; fill: white; }
+
+  .wa-tooltip {
+    position: fixed; bottom: 44px; right: 100px; z-index: 499;
+    background: var(--coal); color: var(--white);
+    font-size: 12px; font-weight: 300;
+    padding: 8px 14px;
+    white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .wa-btn:hover ~ .wa-tooltip { opacity: 1; }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 24px 32px; }
+    .hero { grid-template-columns: 1fr; padding: 100px 32px 60px; min-height: auto; }
+    .hero::before { display: none; }
+    .hero-left { padding-right: 0; padding-bottom: 48px; }
+    .hero-right { padding-left: 0; }
+    .projects-grid, .skills-grid { grid-template-columns: 1fr; }
+    section { padding: 80px 32px; }
+    .contact-section { grid-template-columns: 1fr; }
+    .contact-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 60px 32px; }
+    .contact-right { padding: 60px 32px; }
+    footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<nav>
+  <a href="#" class="nav-logo">Telsio.</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projetos</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top: 0; padding-bottom: 0;">
+  <div class="hero-left reveal">
+    <p class="hero-label">Desenvolvedor Web Fullstack</p>
+    <h1 class="hero-name">
+      Criando<br>
+      <em>experiências</em><br>
+      digitais
+    </h1>
+    <p class="hero-title">Angola · Portugal · Internacional</p>
+    <p class="hero-desc">
+      Desenvolvimento web personalizado com código limpo, design moderno e soluções que crescem com o seu negócio.
+    </p>
+    <a href="#projects" class="hero-cta">Ver Projetos →</a>
+  </div>
+
+  <div class="hero-right reveal" style="transition-delay: 0.15s;">
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Projetos entregues</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Países alcançados</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">7+</div>
+        <div class="stat-label">Tecnologias dominadas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Ideias a construir</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Projetos<br><em style="font-style:italic; color: var(--muted);">selecionados</em></h2>
+  </div>
+
+  <div class="projects-grid">
+
+    <a class="project-card reveal" href="https://www.colegioalfaeomega.com" target="_blank">
+      <p class="project-tag">Instituição Educativa · Web</p>
+      <h3 class="project-name">Colégio<br>Alfa e Ômega</h3>
+      <p class="project-desc">Site institucional para colégio angolano, com apresentação de cursos, corpo docente e contactos — design limpo e acessível.</p>
+      <div class="project-stack">
+        <span class="stack-badge">HTML</span>
+        <span class="stack-badge">CSS</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">Bootstrap</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://abel-costa.vercel.app/" target="_blank" style="transition-delay: 0.1s;">
+      <p class="project-tag">Transporte & Logística · Web</p>
+      <h3 class="project-name">Abel Costa<br>Transportes</h3>
+      <p class="project-desc">Presença digital para empresa de transporte — landing page profissional com serviços, frota e formulário de contacto.</p>
+      <div class="project-stack">
+        <span class="stack-badge">HTML</span>
+        <span class="stack-badge">CSS</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">Vercel</span>
+        <span class="stack-badge">GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="#" style="transition-delay: 0.15s;">
+      <p class="project-tag">EdTech · Aplicação Web</p>
+      <h3 class="project-name">EduConnect</h3>
+      <p class="project-desc">Plataforma de comunicação escolar com chat em tempo real, notificações offline, chamadas via IP e conversas tipo WhatsApp entre professores, alunos e pais.</p>
+      <div class="project-stack">
+        <span class="stack-badge">Node.js</span>
+        <span class="stack-badge">WebSocket</span>
+        <span class="stack-badge">PHP</span>
+        <span class="stack-badge">MySQL</span>
+        <span class="stack-badge">WebRTC</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="#" style="transition-delay: 0.2s;">
+      <p class="project-tag">F&B Tech · Sistema de Gestão</p>
+      <h3 class="project-name">Nexora POS</h3>
+      <p class="project-desc">Sistema de gestão de restaurantes com pedidos via QR Code, painel de cozinha em tempo real, gestão de mesas e relatórios de vendas detalhados.</p>
+      <div class="project-stack">
+        <span class="stack-badge">Node.js</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">PHP</span>
+        <span class="stack-badge">MySQL</span>
+        <span class="stack-badge">QR Code API</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Stack<br><em style="font-style:italic; color: var(--muted);">técnica</em></h2>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <p class="skill-group-title">Frontend</p>
+      <div class="skill-list">
+        <span class="skill-item">HTML5</span>
+        <span class="skill-item">CSS3</span>
+        <span class="skill-item">JavaScript (ES6+)</span>
+        <span class="skill-item">Bootstrap</span>
+      </div>
+    </div>
+    <div class="skill-group reveal" style="transition-delay: 0.1s;">
+      <p class="skill-group-title">Backend</p>
+      <div class="skill-list">
+        <span class="skill-item">Node.js</span>
+        <span class="skill-item">PHP</span>
+        <span class="skill-item">MySQL</span>
+        <span class="skill-item">MongoDB</span>
+      </div>
+    </div>
+    <div class="skill-group reveal" style="transition-delay: 0.2s;">
+      <p class="skill-group-title">Infraestrutura</p>
+      <div class="skill-list">
+        <span class="skill-item">GitHub</span>
+        <span class="skill-item">Vercel</span>
+        <span class="skill-item">Namecheap DNS</span>
+        <span class="skill-item">WebRTC / WebSocket</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact" style="padding: 0;">
+  <div class="contact-left reveal">
+    <p class="contact-label">Disponível para projetos</p>
+    <h2 class="contact-title">
+      Vamos<br>
+      <em>construir</em><br>
+      juntos
+    </h2>
+    <p style="font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.45); max-width: 320px; line-height: 1.75; margin-bottom: 48px;">
+      Baseado em Luanda, Angola. Trabalho com clientes em Portugal, Estados Unidos e internacionalmente.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:telsioisidoro786@gmail.com" class="contact-link">
+        <div>
+          <p class="contact-link-label">Email</p>
+          <p class="contact-link-value">telsioisidoro786@gmail.com</p>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a href="https://github.com/telsioisidoro786-crypton" class="contact-link" target="_blank">
+        <div>
+          <p class="contact-link-label">GitHub</p>
+          <p class="contact-link-value">telsioisidoro786-crypton</p>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a href="https://wa.me/244933609090" class="contact-link" target="_blank">
+        <div>
+          <p class="contact-link-label">WhatsApp</p>
+          <p class="contact-link-value">+244 933 609 090</p>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="contact-right reveal" style="transition-delay: 0.15s;">
+    <p class="contact-label" style="margin-bottom: 32px;">Enviar mensagem</p>
+
+    <div class="contact-form" id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="cf-name">Nome</label>
+          <input class="form-input" id="cf-name" type="text" placeholder="O seu nome" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-email">Email</label>
+          <input class="form-input" id="cf-email" type="email" placeholder="email@exemplo.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="cf-subject">Assunto</label>
+        <input class="form-input" id="cf-subject" type="text" placeholder="Preciso de um site para a minha empresa">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="cf-message">Mensagem</label>
+        <textarea class="form-textarea" id="cf-message" placeholder="Descreva o seu projeto ou ideia..." required></textarea>
+      </div>
+      <div id="formFeedback" class="form-feedback"></div>
+      <button class="btn-submit" id="btnSubmit" onclick="sendEmail()">
+        <span>Enviar Mensagem</span>
+        <span class="btn-arrow">↗</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- WhatsApp floating button -->
+<a href="https://wa.me/244933609090?text=Olá%20Telsio%2C%20vi%20o%20seu%20portfólio%20e%20gostaria%20de%20falar%20sobre%20um%20projeto." class="wa-btn" target="_blank" aria-label="Contactar via WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+<div class="wa-tooltip">Falar no WhatsApp</div>
+
+<footer>
+  <span>© 2025 — Telsio da Honda Isidoro</span>
+  <span style="letter-spacing: 0.15em;">LUANDA · ANGOLA</span>
+  <span>Construído com código limpo</span>
+</footer>
+
+<script>
+  // ── EmailJS ─────────────────────────────────────────────────────────────
+  // 1. Cria conta grátis em https://emailjs.com
+  // 2. Cria um Email Service (Gmail) e um Email Template
+  // 3. Substitui os 3 valores abaixo pelos teus
+  const EJS_PUBLIC_KEY  = 'ZKxAwWEGgCU8rWr0n';
+  const EJS_SERVICE_ID  = 'service_5zzmb58';
+  const EJS_TEMPLATE_ID = 'template_x8s5odf';
+
+  emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+
+  function sendEmail() {
+    const btn      = document.getElementById('btnSubmit');
+    const feedback = document.getElementById('formFeedback');
+    const name     = document.getElementById('cf-name').value.trim();
+    const email    = document.getElementById('cf-email').value.trim();
+    const subject  = document.getElementById('cf-subject').value.trim();
+    const message  = document.getElementById('cf-message').value.trim();
+
+    feedback.className = 'form-feedback';
+    feedback.style.display = 'none';
+
+    if (!name || !email || !message) {
+      feedback.textContent = 'Por favor preenche Nome, Email e Mensagem.';
+      feedback.className = 'form-feedback error';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.querySelector('span').textContent = 'A enviar…';
+
+    emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      from_name: name,
+      from_email: email,
+      subject: subject || 'Contacto via Portfólio',
+      message: message,
+      to_email: 'telsioisidoro786@gmail.com'
+    }).then(() => {
+      feedback.textContent = '✓ Mensagem enviada! Responderei em breve.';
+      feedback.className = 'form-feedback success';
+      document.getElementById('cf-name').value = '';
+      document.getElementById('cf-email').value = '';
+      document.getElementById('cf-subject').value = '';
+      document.getElementById('cf-message').value = '';
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Enviar Mensagem';
+    }).catch(err => {
+      feedback.textContent = 'Erro ao enviar. Tenta pelo WhatsApp ou Email direto.';
+      feedback.className = 'form-feedback error';
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Enviar Mensagem';
+    });
+  }
+
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 80);
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('mouseenter', () => {
+      ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '0.2';
+    });
+    a.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.4';
+    });
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
