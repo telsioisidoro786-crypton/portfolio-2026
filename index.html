@@ -17,7 +17,7 @@
     --mid: #5C5C5C;
     --muted: #8C8C8C;
     --border: #D4D4D0;
-    --light: #EBEBЕ7;
+    --light: #EBEBE7;
     --bg: #F6F5F1;
     --white: #FFFFFF;
     --accent: #1A1A1A;
@@ -51,7 +51,7 @@
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
-    transition: all 0.15s ease;
+    transition: width 0.25s cubic-bezier(.22,1,.36,1), height 0.25s cubic-bezier(.22,1,.36,1), opacity 0.25s ease, left 0.15s ease, top 0.15s ease;
     opacity: 0.4;
   }
   body:hover .cursor, body:hover .cursor-ring { opacity: 1; }
@@ -143,7 +143,7 @@
     color: var(--black); text-decoration: none;
     border-bottom: 1px solid var(--black);
     padding-bottom: 4px;
-    transition: gap 0.3s;
+    transition: gap 0.35s cubic-bezier(.22,1,.36,1);
   }
   .hero-cta:hover { gap: 20px; }
 
@@ -156,7 +156,9 @@
   .stat-item {
     background: var(--white);
     padding: 36px 32px;
+    transition: background 0.3s ease;
   }
+  .stat-item:hover { background: var(--bg); }
   .stat-num {
     font-family: 'Cormorant Garamond', serif;
     font-size: 52px; font-weight: 300;
@@ -201,19 +203,43 @@
     padding: 52px 48px;
     position: relative;
     overflow: hidden;
-    transition: background 0.4s;
+    transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(.22,1,.36,1);
     text-decoration: none;
     color: inherit;
     display: block;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--card-accent, var(--black));
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    transform: scaleX(0.055);
+    transform-origin: left;
+    transition: transform 0.55s cubic-bezier(.22,1,.36,1);
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-card[data-glow="true"]::before {
+    background: linear-gradient(90deg, #7C3AED, #2563EB, #0A0A0A, #7C3AED);
+    background-size: 300% 100%;
+    animation: accent-shimmer 6s linear infinite;
+  }
+  @keyframes accent-shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
   }
   .project-card::after {
     content: '↗';
     position: absolute; top: 40px; right: 48px;
     font-size: 20px; color: var(--border);
-    transition: color 0.3s, transform 0.3s;
+    transition: color 0.3s ease, transform 0.35s cubic-bezier(.22,1,.36,1);
   }
-  .project-card:hover { background: var(--bg); }
-  .project-card:hover::after { color: var(--black); transform: translate(4px, -4px); }
+  .project-card:hover {
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--border), 0 24px 48px -32px var(--accent-shadow, rgba(10,10,10,0.18));
+    transform: translateY(-2px);
+  }
+  .project-card:hover::after { color: var(--accent-solid, var(--black)); transform: translate(4px, -4px); }
 
   .project-tag {
     font-size: 10px; font-weight: 400;
@@ -224,7 +250,7 @@
   .project-tag::before {
     content: '';
     display: inline-block; width: 6px; height: 6px;
-    border-radius: 50%; background: var(--black);
+    border-radius: 50%; background: var(--accent-solid, var(--black));
   }
 
   h3.project-name {
@@ -249,11 +275,13 @@
     color: var(--mid);
     border: 1px solid var(--border);
     padding: 4px 10px;
+    border-radius: 4px;
     background: transparent;
-    transition: border-color 0.2s, color 0.2s;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
   }
   .project-card:hover .stack-badge {
-    border-color: var(--dark); color: var(--dark);
+    border-color: var(--accent-solid, var(--dark)); color: var(--dark);
+    background: var(--white);
   }
 
   /* Skills */
@@ -327,16 +355,17 @@
     padding-top: 24px;
     text-decoration: none;
     color: var(--white);
-    transition: opacity 0.2s;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.22,1,.36,1);
   }
-  .contact-link:hover { opacity: 0.6; }
+  .contact-link:hover { opacity: 0.65; transform: translateX(4px); }
   .contact-link-label {
     font-size: 11px; letter-spacing: 0.1em;
     text-transform: uppercase; color: rgba(255,255,255,0.4);
     margin-bottom: 4px;
   }
   .contact-link-value { font-size: 15px; font-weight: 300; }
-  .contact-link-arrow { font-size: 18px; opacity: 0.3; }
+  .contact-link-arrow { font-size: 18px; opacity: 0.3; transition: transform 0.3s cubic-bezier(.22,1,.36,1); }
+  .contact-link:hover .contact-link-arrow { transform: translate(2px, -2px); }
 
   /* Footer */
   footer {
@@ -365,14 +394,15 @@
     font-size: 14px; font-weight: 300;
     padding: 14px 18px;
     outline: none;
-    transition: border-color 0.25s, background 0.25s;
-    border-radius: 0;
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 6px;
     width: 100%;
   }
   .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.2); }
   .form-input:focus, .form-textarea:focus {
     border-color: rgba(255,255,255,0.4);
     background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
   }
   .form-textarea { resize: vertical; min-height: 110px; }
 
@@ -385,18 +415,20 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 12px; font-weight: 400;
     letter-spacing: 0.1em; text-transform: uppercase;
-    cursor: none; transition: opacity 0.2s, transform 0.2s;
+    border-radius: 6px;
+    cursor: none; transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.22,1,.36,1);
     width: 100%;
   }
-  .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-submit:hover { opacity: 0.88; transform: translateY(-2px); }
   .btn-submit:active { transform: translateY(0); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-arrow { font-size: 16px; transition: transform 0.3s; }
+  .btn-arrow { font-size: 16px; transition: transform 0.3s cubic-bezier(.22,1,.36,1); }
   .btn-submit:hover .btn-arrow { transform: translateX(4px) translateY(-4px); }
 
   .form-feedback {
     font-size: 13px; padding: 12px 16px;
     border-left: 2px solid;
+    border-radius: 4px;
     display: none;
   }
   .form-feedback.success {
@@ -417,7 +449,7 @@
     display: flex; align-items: center; justify-content: center;
     text-decoration: none;
     box-shadow: 0 4px 20px rgba(37,211,102,0.35);
-    transition: transform 0.25s, box-shadow 0.25s;
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
   }
   .wa-btn:hover {
     transform: scale(1.1);
@@ -430,18 +462,25 @@
     background: var(--coal); color: var(--white);
     font-size: 12px; font-weight: 300;
     padding: 8px 14px;
+    border-radius: 6px;
     white-space: nowrap;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.2s;
+    transition: opacity 0.25s ease;
   }
   .wa-btn:hover ~ .wa-tooltip { opacity: 1; }
 
   /* Reveal animation */
   .reveal {
-    opacity: 0; transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.9s cubic-bezier(.22,1,.36,1), transform 0.9s cubic-bezier(.22,1,.36,1);
   }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
 
   @media (max-width: 900px) {
     nav { padding: 24px 32px; }
@@ -491,7 +530,7 @@
   <div class="hero-right reveal" style="transition-delay: 0.15s;">
     <div class="hero-stats">
       <div class="stat-item">
-        <div class="stat-num">4+</div>
+        <div class="stat-num">8+</div>
         <div class="stat-label">Projetos entregues</div>
       </div>
       <div class="stat-item">
@@ -499,7 +538,7 @@
         <div class="stat-label">Países alcançados</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">7+</div>
+        <div class="stat-num">10+</div>
         <div class="stat-label">Tecnologias dominadas</div>
       </div>
       <div class="stat-item">
@@ -519,7 +558,7 @@
 
   <div class="projects-grid">
 
-    <a class="project-card reveal" href="https://www.colegioalfaeomega.com" target="_blank">
+    <a class="project-card reveal" href="https://www.colegioalfaeomega.com" target="_blank" style="--card-accent: linear-gradient(90deg, #2E7D32, #FDD835, #1565C0); --accent-solid: #1565C0; --accent-shadow: rgba(21,101,192,0.25);">
       <p class="project-tag">Instituição Educativa · Web</p>
       <h3 class="project-name">Colégio<br>Alfa e Ômega</h3>
       <p class="project-desc">Site institucional para colégio angolano, com apresentação de cursos, corpo docente e contactos — design limpo e acessível.</p>
@@ -531,7 +570,7 @@
       </div>
     </a>
 
-    <a class="project-card reveal" href="https://abel-costa.vercel.app/" target="_blank" style="transition-delay: 0.1s;">
+    <a class="project-card reveal" href="https://abel-costa.vercel.app/" target="_blank" style="transition-delay: 0.06s; --card-accent: linear-gradient(90deg, #0A0A0A, #C62828); --accent-solid: #C62828; --accent-shadow: rgba(198,40,40,0.25);">
       <p class="project-tag">Transporte & Logística · Web</p>
       <h3 class="project-name">Abel Costa<br>Transportes</h3>
       <p class="project-desc">Presença digital para empresa de transporte — landing page profissional com serviços, frota e formulário de contacto.</p>
@@ -540,33 +579,78 @@
         <span class="stack-badge">CSS</span>
         <span class="stack-badge">JavaScript</span>
         <span class="stack-badge">Vercel</span>
-        <span class="stack-badge">GitHub</span>
       </div>
     </a>
 
-    <a class="project-card reveal" href="#" style="transition-delay: 0.15s;">
-      <p class="project-tag">EdTech · Aplicação Web</p>
-      <h3 class="project-name">EduConnect</h3>
-      <p class="project-desc">Plataforma de comunicação escolar com chat em tempo real, notificações offline, chamadas via IP e conversas tipo WhatsApp entre professores, alunos e pais.</p>
+    <a class="project-card reveal" href="https://barber-shop-site-eight.vercel.app/" target="_blank" style="transition-delay: 0.12s; --card-accent: linear-gradient(90deg, #1E7145, #0A0A0A); --accent-solid: #1E7145; --accent-shadow: rgba(30,113,69,0.25);">
+      <p class="project-tag">Barbearia · Agendamento Web</p>
+      <h3 class="project-name">Barber Shop<br>Panguila</h3>
+      <p class="project-desc">Site de barbearia com sistema de marcação em tempo real, substituindo um fluxo local por dados persistentes na nuvem.</p>
       <div class="project-stack">
-        <span class="stack-badge">Node.js</span>
-        <span class="stack-badge">WebSocket</span>
-        <span class="stack-badge">PHP</span>
-        <span class="stack-badge">MySQL</span>
-        <span class="stack-badge">WebRTC</span>
-      </div>
-    </a>
-
-    <a class="project-card reveal" href="#" style="transition-delay: 0.2s;">
-      <p class="project-tag">F&B Tech · Sistema de Gestão</p>
-      <h3 class="project-name">Nexora POS</h3>
-      <p class="project-desc">Sistema de gestão de restaurantes com pedidos via QR Code, painel de cozinha em tempo real, gestão de mesas e relatórios de vendas detalhados.</p>
-      <div class="project-stack">
-        <span class="stack-badge">Node.js</span>
         <span class="stack-badge">JavaScript</span>
-        <span class="stack-badge">PHP</span>
-        <span class="stack-badge">MySQL</span>
-        <span class="stack-badge">QR Code API</span>
+        <span class="stack-badge">Firebase</span>
+        <span class="stack-badge">GSAP</span>
+        <span class="stack-badge">Vercel</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://lavandaria-adelino.vercel.app/" target="_blank" style="transition-delay: 0.18s; --card-accent: linear-gradient(90deg, #E8A0BC, #E8DCC8); --accent-solid: #D98CAE; --accent-shadow: rgba(217,140,174,0.25);">
+      <p class="project-tag">Lavandaria · Serviços Web</p>
+      <h3 class="project-name">Lavandaria<br>Adelino Pressing</h3>
+      <p class="project-desc">Site de apresentação para lavandaria, com serviços, contacto direto e pedido rápido via WhatsApp.</p>
+      <div class="project-stack">
+        <span class="stack-badge">HTML</span>
+        <span class="stack-badge">CSS</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">Vercel</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://fazenda-girassol.vercel.app/" target="_blank" style="transition-delay: 0.06s; --card-accent: linear-gradient(90deg, #4C7A34, #F4C430); --accent-solid: #4C7A34; --accent-shadow: rgba(76,122,52,0.25);">
+      <p class="project-tag">Agronegócio · Web</p>
+      <h3 class="project-name">Fazenda<br>Girassol</h3>
+      <p class="project-desc">Site atualizado da Fazenda Girassol do Panguila, com identidade visual e estrutura renovadas.</p>
+      <div class="project-stack">
+        <span class="stack-badge">HTML</span>
+        <span class="stack-badge">CSS</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">Vercel</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://perfumaria-grande-seba.vercel.app/" target="_blank" style="transition-delay: 0.12s; --card-accent: linear-gradient(90deg, #0A0A0A, #FFFFFF); --accent-solid: #0A0A0A; --accent-shadow: rgba(10,10,10,0.2);">
+      <p class="project-tag">E-commerce · Loja Virtual</p>
+      <h3 class="project-name">Perfumaria<br>Grande Seba</h3>
+      <p class="project-desc">Loja virtual de perfumes e cosméticos com catálogo dinâmico, encomendas via WhatsApp e painel de administração protegido.</p>
+      <div class="project-stack">
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">Firebase</span>
+        <span class="stack-badge">Firestore</span>
+        <span class="stack-badge">Vercel</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://canto-da-engenharia.vercel.app/" target="_blank" style="transition-delay: 0.18s; --card-accent: linear-gradient(90deg, #4A4A4A, #D4AF37, #FFFFFF); --accent-solid: #D4AF37; --accent-shadow: rgba(212,175,55,0.25);">
+      <p class="project-tag">Comunidade · Plataforma Web</p>
+      <h3 class="project-name">Canto da<br>Engenharia</h3>
+      <p class="project-desc">Plataforma comunitária de engenharia com hero animado em partículas, departamentos, fundadores e formulário de adesão.</p>
+      <div class="project-stack">
+        <span class="stack-badge">Three.js</span>
+        <span class="stack-badge">Anime.js</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">Vercel</span>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://nexorasystems.vercel.app/" target="_blank" data-glow="true" style="transition-delay: 0.24s; --accent-solid: #7C3AED; --accent-shadow: rgba(124,58,237,0.3);">
+      <p class="project-tag">Agência Própria · Landing Page</p>
+      <h3 class="project-name">Nexora<br>Systems</h3>
+      <p class="project-desc">Landing page da minha própria agência, com pacotes de serviços, SEO estruturado (JSON-LD, sitemap) e captação de leads.</p>
+      <div class="project-stack">
+        <span class="stack-badge">HTML</span>
+        <span class="stack-badge">CSS</span>
+        <span class="stack-badge">JavaScript</span>
+        <span class="stack-badge">SEO</span>
       </div>
     </a>
 
@@ -588,24 +672,25 @@
         <span class="skill-item">CSS3</span>
         <span class="skill-item">JavaScript (ES6+)</span>
         <span class="skill-item">Bootstrap</span>
+        <span class="skill-item">GSAP / Anime.js / Three.js</span>
       </div>
     </div>
-    <div class="skill-group reveal" style="transition-delay: 0.1s;">
+    <div class="skill-group reveal" style="transition-delay: 0.08s;">
       <p class="skill-group-title">Backend</p>
       <div class="skill-list">
         <span class="skill-item">Node.js</span>
         <span class="skill-item">PHP</span>
         <span class="skill-item">MySQL</span>
-        <span class="skill-item">MongoDB</span>
+        <span class="skill-item">Firebase (Firestore + Storage)</span>
       </div>
     </div>
-    <div class="skill-group reveal" style="transition-delay: 0.2s;">
+    <div class="skill-group reveal" style="transition-delay: 0.16s;">
       <p class="skill-group-title">Infraestrutura</p>
       <div class="skill-list">
         <span class="skill-item">GitHub</span>
         <span class="skill-item">Vercel</span>
         <span class="skill-item">Namecheap DNS</span>
-        <span class="skill-item">WebRTC / WebSocket</span>
+        <span class="skill-item">WhatsApp Business API</span>
       </div>
     </div>
   </div>
@@ -688,16 +773,13 @@
 <div class="wa-tooltip">Falar no WhatsApp</div>
 
 <footer>
-  <span>© 2025 — Telsio da Honda Isidoro</span>
+  <span>© 2026 — Telsio da Honda Isidoro</span>
   <span style="letter-spacing: 0.15em;">LUANDA · ANGOLA</span>
   <span>Construído com código limpo</span>
 </footer>
 
 <script>
   // ── EmailJS ─────────────────────────────────────────────────────────────
-  // 1. Cria conta grátis em https://emailjs.com
-  // 2. Cria um Email Service (Gmail) e um Email Template
-  // 3. Substitui os 3 valores abaixo pelos teus
   const EJS_PUBLIC_KEY  = 'ZKxAwWEGgCU8rWr0n';
   const EJS_SERVICE_ID  = 'service_5zzmb58';
   const EJS_TEMPLATE_ID = 'template_x8s5odf';
